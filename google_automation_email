@@ -1,0 +1,64 @@
+function main() {
+  // access google sheet
+
+  var wb = SpreadsheetApp.getActiveSpreadsheet();
+
+  // access sheet with data
+
+  var sheet = wb.getSheetByName('Summary');
+
+  // access the data in a var
+
+  var range = sheet.getDataRange();
+  var data = range.getValues();
+
+
+  console.log(data[data.length - 1]);
+
+  var lastRecord = data[data.length - 1];
+
+  // define data points
+
+  var name = lastRecord[1];
+  var email = lastRecord[2];
+  var whatsapp = lastRecord[3];
+  var college = lastRecord[4];
+  var query = lastRecord[5];
+
+  // mailing list
+
+  var adminEmail = ['vimal.linuxworld@gmail.com'];
+
+console.log(email);
+
+// create template object for dyn contruct html
+
+  var htmlTemplate = HtmlService.createTemplateFromFile('email');
+
+  // define html var
+  htmlTemplate.name = name;
+  htmlTemplate.email = email;
+  htmlTemplate.whatsapp = whatsapp;
+  htmlTemplate.college = college;
+  htmlTemplate.query = query;
+
+  // evalute template and return html output object
+  var  htmlForEmail = htmlTemplate.evaluate().getContent();
+
+  // send email
+  GmailApp.sendEmail(
+    adminEmail,
+    'New Summer Query from YT google Sheet',
+    'this email contain YT google sheet',
+    {htmlBody: htmlForEmail}
+  )
+
+
+
+
+
+
+
+
+
+}
